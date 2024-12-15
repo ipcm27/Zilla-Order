@@ -12,9 +12,8 @@ import java.util.List;
 @Table(name = "T_ORDER")
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
 public class Order {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
@@ -23,5 +22,27 @@ public class Order {
     @OneToMany(cascade = CascadeType.ALL)
     private List<OrderLineItems> orderLineItemsList;
 
+    public Long getId() {
+        return id;
+    }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getOrderCode() {
+        return orderCode;
+    }
+
+    public void setOrderCode(String orderCode) {
+        this.orderCode = orderCode;
+    }
+
+    public List<OrderLineItems> getOrderLineItemsList() {
+        return orderLineItemsList;
+    }
+
+    public void setOrderLineItemsList(List<OrderLineItems> orderLineItemsList) {
+        this.orderLineItemsList = orderLineItemsList;
+    }
 }
