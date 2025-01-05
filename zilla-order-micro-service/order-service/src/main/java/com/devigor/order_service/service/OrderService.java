@@ -5,6 +5,7 @@ import com.devigor.order_service.dto.OrderRequest;
 import com.devigor.order_service.model.Order;
 import com.devigor.order_service.model.OrderLineItems;
 import com.devigor.order_service.repository.OrderRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +21,7 @@ public class OrderService {
         this.orderRepository = orderRepository;
     }
 
-    public void placeOrder(OrderRequest orderRequest) {
+    public void placeOrder(@Valid OrderRequest orderRequest) {
         Order order = new Order();
         order.setOrderCode(UUID.randomUUID().toString());
 
