@@ -10,3 +10,7 @@ Architecture
   <li> MIcroservices </li>
   <li> NoSql Databases </li>
 </ul>
+
+<h2>Sinc comunication between services:</h2>
+![image](https://github.com/user-attachments/assets/91522ca7-95d3-437a-8c22-dbd88c5bbeee)
+
