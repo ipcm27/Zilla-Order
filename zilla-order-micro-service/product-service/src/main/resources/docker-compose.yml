@@ -1,4 +1,3 @@
-version: "3.8"
 services:
   mongodb:
     image: mongo:latest
@@ -25,6 +24,7 @@ services:
       - mysql-data:/var/lib/mysql
 volumes:
   mongo-data:
-    driver: local
+
   mysql-data:
-    driver: local
+    external: true
+    name: da72dd2fc112935d70d44acd182a2062852337e6838c905c2bbaed9f3b4b01b7
