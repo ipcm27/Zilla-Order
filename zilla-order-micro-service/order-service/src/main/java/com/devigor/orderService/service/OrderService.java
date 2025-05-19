@@ -7,6 +7,7 @@ import com.devigor.orderService.dto.OrderRequest;
 import com.devigor.orderService.model.Order;
 import com.devigor.orderService.model.OrderLineItems;
 import com.devigor.orderService.repository.OrderRepository;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
@@ -16,7 +17,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-@RequiredArgsConstructor
+@RequiredArgsConstructor(access = AccessLevel.PUBLIC)
 public class OrderService {
 
     private final OrderRepository orderRepository;
@@ -37,17 +38,16 @@ public class OrderService {
         } else {
             throw new IllegalArgumentException("Product is not in Stock pelase try again later");
         }
-
     }
 
-    private List<InventoryResponse> getInventoryList(List<String> skuCodes) {
+    protected List<InventoryResponse> getInventoryList(List<String> skuCodes) {
         return webClient.get()
                 .uri(INVENTORY_URL,
                         uriBuilder -> uriBuilder.queryParam("skuCodes", skuCodes).build())
                 .retrieve().bodyToMono(new ParameterizedTypeReference<List<InventoryResponse>>() {}).block();
     }
 
-    private boolean allProductsInInventory(List<String> skuCodes) {
+    protected boolean allProductsInInventory(List<String> skuCodes) {
         List<InventoryResponse> inventoryList = getInventoryList(skuCodes);
       return inventoryList.stream().allMatch(InventoryResponse::isInStock);
     }

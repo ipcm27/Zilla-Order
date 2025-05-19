@@ -1,6 +1,7 @@
 package com.devIgor.inventoryService.service;
 
 import com.devIgor.inventoryService.dto.InventoryResponse;
+import com.devIgor.inventoryService.model.Inventory;
 import com.devIgor.inventoryService.repository.InventoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,9 +19,13 @@ public class InventoryService {
         this.inventoryRepository = inventoryRepository;
     }
 
+
+    // TODO: APrimorar lógica pra ver se tem item ou nao. Atualmente
     @Transactional(readOnly = true)
     public List<InventoryResponse> isInInventory(List<String> skuCodeList){
-        return inventoryRepository.findBySkuCodeIn(skuCodeList)
+
+        List<Inventory> inventoryList = inventoryRepository.findBySkuCodeIn(skuCodeList);
+        return inventoryList
                 .stream()
                 .map(inventory ->
                     InventoryResponse.builder()

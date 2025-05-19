@@ -1,9 +1,11 @@
 package com.devIgor.inventoryService.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 
 @Entity
 @Table(name = "t_inventory")
+@AllArgsConstructor
 public class Inventory {
 
     @Id

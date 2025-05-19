@@ -19,7 +19,6 @@
         <module>product-service</module>
         <module>order-service</module>
         <module>inventory-service</module>
-        <module>discovery-server</module>
     </modules>
 
     <properties>
