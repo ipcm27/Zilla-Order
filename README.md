@@ -1,6 +1,6 @@
 
 
-````markdown
+
 # 🦖 Zilla Order – Microservices Architecture
 
 Zilla Order is a microservices-based order management system designed for scalability, flexibility, and experimentation with modern tools like Kubernetes, Kafka, and CI/CD pipelines.
@@ -17,9 +17,7 @@ This project currently consists of the following microservices:
 
 All services expose RESTful APIs documented via **Swagger**.
 
-![Zilla order](https://github.com/user-attachments/assets/a1abc55f-c95c-41b8-9fed-43ae8e2ba683)
-
----
+![d1](https://github.com/user-attachments/assets/b06b1baf-5357-44c2-8686-3eb9d8cecf93)
 
 ## 🚀 Getting Started (Local)
 
