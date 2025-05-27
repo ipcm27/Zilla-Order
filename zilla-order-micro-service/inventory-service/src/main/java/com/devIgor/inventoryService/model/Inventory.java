@@ -2,10 +2,14 @@ package com.devIgor.inventoryService.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "t_inventory")
 @AllArgsConstructor
+@NoArgsConstructor
+@Data
 public class Inventory {
 
     @Id
@@ -14,30 +18,4 @@ public class Inventory {
     private String skuCode;
     private Integer quantity;
 
-    public Inventory() {
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getSkuCode() {
-        return skuCode;
-    }
-
-    public void setSkuCode(String skuCode) {
-        this.skuCode = skuCode;
-    }
-
-    public Integer getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
-    }
 }

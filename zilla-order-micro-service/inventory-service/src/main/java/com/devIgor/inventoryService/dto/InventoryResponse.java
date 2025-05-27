@@ -1,5 +1,6 @@
 package com.devIgor.inventoryService.dto;
 
+import com.devIgor.inventoryService.model.InventoryStatus;
 import lombok.*;
 
 @Data
@@ -10,5 +11,6 @@ import lombok.*;
 @Builder
 public class InventoryResponse {
     private String skuCode;
-    private boolean isInStock;
+    private Integer quantity;
+    private InventoryStatus inventoryStatus;
 }
