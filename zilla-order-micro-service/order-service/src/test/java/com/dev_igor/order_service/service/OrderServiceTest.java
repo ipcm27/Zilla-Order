@@ -1,19 +1,24 @@
 package com.dev_igor.order_service.service;
 
-import com.dev_igor.order_service.dto.InventoryResponse;
+import com.dev_igor.order_service.dto.request.OrderLineItemsDto;
+import com.dev_igor.order_service.dto.request.OrderRequest;
+import com.dev_igor.order_service.dto.response.InventoryResponse;
+import com.dev_igor.order_service.dto.response.InventoryStatus;
+import com.dev_igor.order_service.model.Order;
 import com.dev_igor.order_service.repository.OrderRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -23,55 +28,42 @@ class OrderServiceTest {
     @Mock
     private OrderRepository orderRepository;
 
+
     @Mock
-    private WebClient webClient;
+    private InventoryClient inventoryClient;
 
     @InjectMocks
     OrderService orderService;
 
+    OrderRequest orderRequest;
 
-    @Test
-    void shouldReturnFalseIFProductNotIInventory() {
+    @BeforeEach
+    void setup(){
 
-        OrderService spyService = Mockito.spy(orderService);
+        OrderLineItemsDto iphone = new OrderLineItemsDto(1L, "Iphone_13", 1200.00,10);
+        OrderLineItemsDto samsung = new OrderLineItemsDto(2L, "Samsung_tv", 900.00,10);
 
-       List<String> skuCodes = List.of("Iphone_13",
-               "Banana");
+        List<OrderLineItemsDto> items = List.of(iphone,samsung);
+        this.orderRequest = new OrderRequest(items);
 
-        List<InventoryResponse> mockResponse = List.of(
-                new InventoryResponse("Iphone_13", true),
-                new InventoryResponse("Banana", false)
-        );
+        List<String> skuCode = List.of("Iphone_13","Samsung_tv");
+        InventoryResponse available = new InventoryResponse("Iphone_13", 10, InventoryStatus.IN_STOCK);
+        InventoryResponse unavailable = new InventoryResponse("Samsung_tv", 10, InventoryStatus.OUT_OF_STOCK);
 
-        Mockito.doReturn(mockResponse)
-                .when(spyService)
-                .getInventoryList(skuCodes);
-
-        boolean result = spyService.allProductsInInventory(skuCodes);
-        assertFalse(result);
-
+        when(inventoryClient.getInventoryStatus(skuCode)).thenReturn(List.of(available,unavailable));
     }
 
     @Test
-    void shouldReturnTrueIfProductNotIInventory() {
+    void shouldPlaceOrder() {
 
-        OrderService spyService = Mockito.spy(orderService);
+        orderService.placeOrder(orderRequest);
 
-        List<String> skuCodes = List.of("Iphone_13",
-                "Banana");
+        ArgumentCaptor<Order> orderCaptor = ArgumentCaptor.forClass(Order.class);
+        verify(orderRepository).save(orderCaptor.capture());
 
-        List<InventoryResponse> mockResponse = List.of(
-                new InventoryResponse("Iphone_13", true),
-                new InventoryResponse("Banana", true)
-        );
-
-        Mockito.doReturn(mockResponse)
-                .when(spyService)
-                .getInventoryList(skuCodes);
-
-        boolean result = spyService.allProductsInInventory(skuCodes);
-        assertTrue(result);
-
+        Order savedOrder = orderCaptor.getValue();
+        assertEquals(1,savedOrder.getOrderLineItemList().size());
+        assertEquals("Iphone_13", savedOrder.getOrderLineItemList().get(0).getSkuCode());
     }
 
 

@@ -1,34 +1,30 @@
-package com.dev_igor.order_service.model;
+package com.dev_igor.order_service.dto.request;
 
-import jakarta.persistence.*;
+import com.dev_igor.order_service.model.Order;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 
 import java.math.BigDecimal;
 
 @Setter
 @Getter
-@Entity
-@Table(name = "T_ORDER_LINE_ITEMS")
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderLineItems {
+public class OrderLineItemsDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull(message = "skuCode cannot be null.")
+    private Order order;
+
+    @NotNull(message = "SKU Code cannot be null.")
     private String skuCode;
 
     @NotNull(message = "Price cannot be null.")
     @Positive(message = "Price must be greater than zero.")
-    private BigDecimal price;
+    private double price;
 
     @NotNull(message = "Quantity cannot be null.")
     @Positive(message = "Quantity must be greater than zero.")

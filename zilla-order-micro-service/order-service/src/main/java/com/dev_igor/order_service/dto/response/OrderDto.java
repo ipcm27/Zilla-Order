@@ -1,5 +1,6 @@
-package com.dev_igor.order_service.dto;
+package com.dev_igor.order_service.dto.response;
 
+import com.dev_igor.order_service.dto.request.OrderLineItemsDto;
 import com.dev_igor.order_service.model.Order;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
@@ -19,9 +20,10 @@ public class OrderDto {
     private List<OrderLineItemsDto> orderLineItemsDtoList;
 
     public static OrderDto mapToDto(Order order) {
-        List<OrderLineItemsDto> lineITemsDto = order.getOrderLineItemsList().stream()
+        List<OrderLineItemsDto> lineITemsDto = order.getOrderLineItemList().stream()
                 .map(item -> new OrderLineItemsDto(
                         item.getId(),
+                        item.getOrder(),
                         item.getSkuCode(),
                         item.getPrice(),
                         item.getQuantity()

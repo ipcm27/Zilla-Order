@@ -1,4 +1,4 @@
-package com.dev_igor.order_service.dto;
+package com.dev_igor.order_service.dto.request;
 
 import jakarta.validation.constraints.NotEmpty;
 import lombok.*;

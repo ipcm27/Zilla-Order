@@ -1,4 +1,4 @@
-package com.dev_igor.order_service.dto;
+package com.dev_igor.order_service.dto.response;
 
 import lombok.*;
 
@@ -10,5 +10,6 @@ import lombok.*;
 @Builder
 public class InventoryResponse {
     private String skuCode;
-    private boolean isInStock;
+    private Integer quantity;
+    private InventoryStatus inventoryStatus;
 }

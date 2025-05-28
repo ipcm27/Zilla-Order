@@ -1,7 +1,7 @@
 package com.dev_igor.order_service.controller;
 
-import com.dev_igor.order_service.dto.OrderDto;
-import com.dev_igor.order_service.dto.OrderRequest;
+import com.dev_igor.order_service.dto.response.OrderDto;
+import com.dev_igor.order_service.dto.request.OrderRequest;
 import com.dev_igor.order_service.service.OrderService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
