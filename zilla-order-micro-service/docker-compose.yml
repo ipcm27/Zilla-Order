@@ -1,30 +1,67 @@
 services:
+  postgres:
+    image: postgres:15
+    container_name: postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data  # ✅ AQUI está a mudança — usando volume nomeado
+
   mongodb:
-    image: mongo:latest
+    image: mongo:7.0
     container_name: mongodb
+    restart: always
     ports:
       - "27017:27017"
     environment:
-      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
-      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
-      MONGO_INITDB_DATABASE: ${MONGO_DATABASE}
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
     volumes:
-      - mongo-data:/data/db
+      - mongo_data:/data/db  # ✅ Volume nomeado para MongoDB também
 
-  mysql:
-    image: mysql:latest
-    container_name: mysql
+  inventory-service:
+    build:
+      context: .
+      dockerfile: inventory-service/Dockerfile
     ports:
-        - "3306:3306"
+      - "8086:8086"
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-    volumes:
-      - mysql-data:/var/lib/mysql
-volumes:
-  mongo-data:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/${POSTGRES_DB}
+      - SPRING_DATASOURCE_USERNAME=${POSTGRES_USER}
+      - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}
+    depends_on:
+      - postgres
 
-  mysql-data:
-    external: true
-    name: da72dd2fc112935d70d44acd182a2062852337e6838c905c2bbaed9f3b4b01b7
+  order-service:
+    build:
+      context: .
+      dockerfile: order-service/Dockerfile
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/${POSTGRES_DB}
+      - SPRING_DATASOURCE_USERNAME=${POSTGRES_USER}
+      - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}
+    depends_on:
+      - postgres
+      - inventory-service
+
+  product-service:
+    build:
+      context: .
+      dockerfile: product-service/Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@mongodb:27017
+    depends_on:
+      - mongodb
+
+volumes:
+  postgres_data:  # ✅ Volume nomeado definido aqui
+  mongo_data:     # ✅ E aqui também
