@@ -39,6 +39,7 @@ docker-compose up --build
 
 Each service will be available at:
 
+
 * `http://localhost:8081` → **Inventory Service**
 * `http://localhost:8082` → **Order Service**
 * `http://localhost:8083` → **Product Service**
