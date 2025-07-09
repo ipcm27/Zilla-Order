@@ -19,6 +19,14 @@ All services expose RESTful APIs documented via **Swagger**.
 
 ![d1](https://github.com/user-attachments/assets/b06b1baf-5357-44c2-8686-3eb9d8cecf93)
 
+“In my Zilla Order project, which simulated a microservices-based e-commerce system, I used Kafka and RabbitMQ together, each playing a specific role.
+
+RabbitMQ was responsible for queuing transactional tasks between services — like placing an order or updating inventory — where I needed guaranteed delivery with fast, isolated processing.
+
+On the other hand, Kafka was used as an event backbone to log and monitor distributed events, like OrderCreated, ProductReserved, or PaymentConfirmed, making it easier to trace the entire lifecycle of a request across the system.
+
+I implemented retry logic using Spring Cloud Retry, and for autoscaling, I containerized everything with Docker, orchestrated by Kubernetes, allowing the consumers to scale based on workload.”
+
 ## 🚀 Getting Started (Local)
 
 ### Prerequisites
